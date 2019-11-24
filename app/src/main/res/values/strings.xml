@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">JuliaoJonah_HCI_Outcome2_v1</string>
+    <string name="password_saver">Password Saver</string>
+    <string name="date">Date</string>
+    <string name="saved_passwords">Saved Passwords</string>
+    <string name="create_password">Create Password</string>
+    <string name="description">Description:</string>
+    <string name="password">Password:</string>
+    <string name="amazon">Amazon</string>
+    <string name="todo">TODO</string>
+    <string name="save">Save</string>
+    <string name="saved_passwords1">Saved Passwords2</string>
+    <string name="create_password2">Create Password2</string>
+</resources>
