@@ -82,55 +82,61 @@
         android:layout_marginTop="5dp"
         android:ems="10"
         android:hint="@string/amazon"
+        android:importantForAutofill="no"
         android:inputType="textPersonName"
+        android:nextFocusDown="@id/password1"
         android:textSize="14sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/description"
-        android:importantForAutofill="no" />
+        app:layout_constraintTop_toBottomOf="@+id/description" />
 
     <EditText
         android:id="@+id/password1"
-        android:layout_width="53dp"
-        android:layout_height="39dp"
+        android:layout_width="45dp"
+        android:layout_height="40dp"
         android:layout_marginStart="30dp"
         android:layout_marginTop="5dp"
         android:layout_marginEnd="10dp"
         android:ems="10"
         android:inputType="number"
+        android:maxLength="2"
+        android:nextFocusDown="@id/password2"
         app:layout_constraintEnd_toStartOf="@+id/password2"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/password" />
 
     <EditText
         android:id="@+id/password2"
-        android:layout_width="53dp"
-        android:layout_height="39dp"
+        android:layout_width="45dp"
+        android:layout_height="40dp"
         android:layout_marginStart="10dp"
         android:layout_marginTop="5dp"
         android:ems="10"
         android:inputType="number"
+        android:maxLength="2"
         app:layout_constraintStart_toEndOf="@+id/password1"
         app:layout_constraintTop_toBottomOf="@+id/password" />
 
     <EditText
         android:id="@+id/password3"
-        android:layout_width="53dp"
-        android:layout_height="39dp"
+        android:layout_width="45dp"
+        android:layout_height="40dp"
         android:layout_marginStart="10dp"
         android:layout_marginTop="5dp"
         android:ems="10"
         android:inputType="number"
+        android:maxLength="2"
         app:layout_constraintStart_toEndOf="@+id/password2"
         app:layout_constraintTop_toBottomOf="@+id/password" />
 
     <EditText
         android:id="@+id/password4"
-        android:layout_width="53dp"
-        android:layout_height="39dp"
+        android:layout_width="45dp"
+        android:layout_height="40dp"
         android:layout_marginStart="10dp"
         android:layout_marginTop="5dp"
         android:ems="10"
         android:inputType="number"
+        android:maxLength="2"
         app:layout_constraintStart_toEndOf="@+id/password3"
         app:layout_constraintTop_toBottomOf="@+id/password" />
 
@@ -140,6 +146,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="200dp"
         android:layout_marginTop="20dp"
+        android:onClick="save"
         android:text="@string/save"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/password3" />
@@ -148,11 +155,12 @@
         android:id="@+id/randomPassword"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="30dp"
+        android:layout_marginStart="20dp"
         android:layout_marginTop="19dp"
+        android:contentDescription="TODO"
+        android:onClick="randomise"
         app:layout_constraintStart_toEndOf="@+id/password4"
         app:layout_constraintTop_toBottomOf="@+id/descriptionName"
-        app:srcCompat="@drawable/dice_icon"
-        android:contentDescription="TODO" />
+        app:srcCompat="@drawable/dice_icon" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
