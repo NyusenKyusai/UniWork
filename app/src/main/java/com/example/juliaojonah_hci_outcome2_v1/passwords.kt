@@ -4,6 +4,9 @@ import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
+import android.widget.LinearLayout
+import android.widget.ScrollView
 import android.widget.TextView
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_main.*
@@ -23,27 +26,36 @@ class passwords : AppCompatActivity() {
         val dateTextView : TextView = findViewById(R.id.textDate2) as TextView
         dateTextView.setText(dateFormatted)
 
-        createPassword2.setOnClickListener{
-            val intent = Intent(this, MainActivity::class.java)
-            startActivity(intent)
-        }
-
         val sharedPrefsCounter = getSharedPreferences("passwordAppCounter", Context.MODE_PRIVATE)
         val counter = sharedPrefsCounter.getInt("counter", 0)
+
+        
+        val savedPasswords = savedPasswords as LinearLayout
 
         if (counter > 0) {
 
             val sharedPrefsCounter = getSharedPreferences("passwordAppPasswords", Context.MODE_PRIVATE)
 
             for (i in 1..counter) {
+
                 val objectString = sharedPrefsCounter.getString("passwordObject$i", "")
 
-                val personObj = Gson().fromJson<PasswordCluster>(objectString, PasswordCluster::class.java!!)
+                val passwordObject = Gson().fromJson<PasswordCluster>(objectString, PasswordCluster::class.java!!)
+
+                var passwordSection = ScrollView(this)
+                passwordSection = (passwordObject.description + "                     " + passwordObject.dateTime + "\n" + passwordObject.passwordCluster + "\n\n") as ScrollView
+
+                savedPasswords.addView((passwordSection))
 
 
-                val editText = findViewById<TextView>(R.id.savedPasswords)
-                editText.setText(personObj.toString())
             }
         }
+
+
+    }
+
+    fun firstActivity(view: View){
+        val intent = Intent(this, MainActivity::class.java)
+        startActivity(intent)
     }
 }

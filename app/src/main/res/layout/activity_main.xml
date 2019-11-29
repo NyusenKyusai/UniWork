@@ -48,6 +48,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="30dp"
         android:layout_marginTop="20dp"
+        android:onClick="secondActivity"
         android:text="@string/saved_passwords"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/passwordSaver" />
@@ -113,6 +114,7 @@
         android:ems="10"
         android:inputType="number"
         android:maxLength="2"
+        android:nextFocusRight="@id/password3"
         app:layout_constraintStart_toEndOf="@+id/password1"
         app:layout_constraintTop_toBottomOf="@+id/password" />
 
@@ -125,6 +127,7 @@
         android:ems="10"
         android:inputType="number"
         android:maxLength="2"
+        android:nextFocusRight="@id/password4"
         app:layout_constraintStart_toEndOf="@+id/password2"
         app:layout_constraintTop_toBottomOf="@+id/password" />
 
@@ -162,5 +165,14 @@
         app:layout_constraintStart_toEndOf="@+id/password4"
         app:layout_constraintTop_toBottomOf="@+id/descriptionName"
         app:srcCompat="@drawable/dice_icon" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="75dp"
+        android:layout_marginTop="160dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/password2" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

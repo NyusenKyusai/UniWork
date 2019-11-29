@@ -29,40 +29,35 @@ class MainActivity : AppCompatActivity() {
 
         val dateTextView : TextView = findViewById(R.id.textDate) as TextView
         dateTextView.setText(dateFormatted)
-
-        savedPasswords.setOnClickListener{
-            val intent = Intent(this, passwords::class.java)
-            startActivity(intent)
-        }
-
-        val saveButtonClick = findViewById(R.id.save) as Button
-
-
-
         }
 
 
-fun randomise(view: View){
+    fun secondActivity(view: View){
+        val intent = Intent(this, passwords::class.java)
+        startActivity(intent)
+    }
+
+    fun randomise(view: View){
 
 
-    val passwordSet1 = Random.nextInt(0,99)
-    val passwordSet2 = Random.nextInt(0,99)
-    val passwordSet3 = Random.nextInt(0,99)
-    val passwordSet4 = Random.nextInt(0,99)
+        val passwordSet1 = Random.nextInt(0,99)
+        val passwordSet2 = Random.nextInt(0,99)
+        val passwordSet3 = Random.nextInt(0,99)
+        val passwordSet4 = Random.nextInt(0,99)
 
-    val editText1 = findViewById<EditText>(R.id.password1)
-    editText1.setText(passwordSet1.toString())
+        val editText1 = findViewById<EditText>(R.id.password1)
+        editText1.setText(passwordSet1.toString())
 
-    val editText2 = findViewById<EditText>(R.id.password2)
-    editText2.setText(passwordSet2.toString())
+        val editText2 = findViewById<EditText>(R.id.password2)
+        editText2.setText(passwordSet2.toString())
 
-    val editText3 = findViewById<EditText>(R.id.password3)
-    editText3.setText(passwordSet3.toString())
+        val editText3 = findViewById<EditText>(R.id.password3)
+        editText3.setText(passwordSet3.toString())
 
-    val editText4 = findViewById<EditText>(R.id.password4)
-    editText4.setText(passwordSet4.toString())
+        val editText4 = findViewById<EditText>(R.id.password4)
+        editText4.setText(passwordSet4.toString())
 
-}
+    }
 
 
 
@@ -87,25 +82,34 @@ fun randomise(view: View){
 
 
         val description = descriptionName.text.toString().trim()
-        val password = password1.text.toString() + "-" + password2.text.toString() + "-" + password3.text.toString() + "-" + password4.text.toString()
-        val date = dateTime.toString()
+        val password = password1.text.toString().trim() + "-" + password2.text.toString().trim() + "-" + password3.text.toString().trim() + "-" + password4.text.toString().trim()
+        if (description == "" || password == "---"){
+            Toast.makeText(this, "Please Enter Proper Value", Toast.LENGTH_LONG).show()
+        } else {
+            val date = dateTime.toString()
 
-        val data = PasswordCluster(description, password, date)
-        val jsonPassword = Gson().toJson(data)
+            val data = PasswordCluster(description, password, date)
+            val jsonPassword = Gson().toJson(data)
 
 
-        val sharedPrefsPasswords = getSharedPreferences("passwordAppPasswords", Context.MODE_PRIVATE)
-        val editorPassword = sharedPrefsPasswords.edit()
+            val sharedPrefsPasswords =
+                getSharedPreferences("passwordAppPasswords", Context.MODE_PRIVATE)
+            val editorPassword = sharedPrefsPasswords.edit()
 
-        editorPassword.putString("passwordObject$i", jsonPassword)
+            editorPassword.putString("passwordObject" + i, jsonPassword)
 
-        editorPassword.apply()
+            editorPassword.apply()
 
-        Toast.makeText(this, "Data Saved", Toast.LENGTH_LONG).show()
+            Toast.makeText(this, "Data Saved", Toast.LENGTH_LONG).show()
 
-        val editorCounter = sharedPrefsCounter.edit()
+            val editorCounter = sharedPrefsCounter.edit()
 
-        editorCounter.putInt("counter", i + 1)
+            editorCounter.putInt("counter", i + 1)
+            editorCounter.apply()
+
+
+        }
+
 
     }
 
