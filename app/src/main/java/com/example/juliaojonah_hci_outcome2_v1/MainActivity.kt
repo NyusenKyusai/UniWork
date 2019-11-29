@@ -9,7 +9,9 @@ import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_main.*
+import java.security.spec.PSSParameterSpec
 import java.text.DateFormat
 import java.util.*
 import kotlin.random.Random
@@ -66,18 +68,45 @@ fun randomise(view: View){
 
     fun save(view: View){
 
+        val sharedPrefsCounter = getSharedPreferences("passwordAppCounter", Context.MODE_PRIVATE)
+        var i = sharedPrefsCounter.getInt("counter", 0)
 
-        val sharedPrefs = getSharedPreferences("passwordAppFile", Context.MODE_PRIVATE)
-        val editor = sharedPrefs.edit()
+        if (i == 0){
+            val editorCounter = sharedPrefsCounter.edit()
 
-        editor.putString("description", descriptionName.text.toString())
-        editor.putString("password1", password1.text.toString())
-        editor.putString("password2", password2.text.toString())
-        editor.putString("password3", password3.text.toString())
-        editor.putString("password4", password4.text.toString())
+            editorCounter.putInt("counter", 1)
+            editorCounter.apply()
 
-        editor.apply()
+            i = 1
+        }
+
+
+        val dateTime = Calendar.getInstance().time
+
+        val dateFormatted = DateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.MEDIUM).format(dateTime)
+
+
+        val description = descriptionName.text.toString().trim()
+        val password = password1.text.toString() + "-" + password2.text.toString() + "-" + password3.text.toString() + "-" + password4.text.toString()
+        val date = dateTime.toString()
+
+        val data = PasswordCluster(description, password, date)
+        val jsonPassword = Gson().toJson(data)
+
+
+        val sharedPrefsPasswords = getSharedPreferences("passwordAppPasswords", Context.MODE_PRIVATE)
+        val editorPassword = sharedPrefsPasswords.edit()
+
+        editorPassword.putString("passwordObject$i", jsonPassword)
+
+        editorPassword.apply()
+
         Toast.makeText(this, "Data Saved", Toast.LENGTH_LONG).show()
+
+        val editorCounter = sharedPrefsCounter.edit()
+
+        editorCounter.putInt("counter", i + 1)
+
     }
 
 }
