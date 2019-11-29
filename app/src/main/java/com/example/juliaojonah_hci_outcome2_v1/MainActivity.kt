@@ -3,12 +3,14 @@ package com.example.juliaojonah_hci_outcome2_v1
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.text.TextUtils
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.example.mrtayyab.sqlitedbkotlin.DatabaseHelper
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_main.*
 import java.security.spec.PSSParameterSpec
@@ -18,6 +20,8 @@ import kotlin.random.Random
 
 
 class MainActivity : AppCompatActivity() {
+
+    lateinit var myDb: DatabaseHelper
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,6 +33,8 @@ class MainActivity : AppCompatActivity() {
 
         val dateTextView : TextView = findViewById(R.id.textDate) as TextView
         dateTextView.setText(dateFormatted)
+
+        myDb = DatabaseHelper(this)
         }
 
 
@@ -62,53 +68,38 @@ class MainActivity : AppCompatActivity() {
 
 
     fun save(view: View){
-
-        val sharedPrefsCounter = getSharedPreferences("passwordAppCounter", Context.MODE_PRIVATE)
-        var i = sharedPrefsCounter.getInt("counter", 0)
-
-        if (i == 0){
-            val editorCounter = sharedPrefsCounter.edit()
-
-            editorCounter.putInt("counter", 1)
-            editorCounter.apply()
-
-            i = 1
-        }
-
-
-        val dateTime = Calendar.getInstance().time
-
-        val dateFormatted = DateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.MEDIUM).format(dateTime)
-
+        var correct = true
 
         val description = descriptionName.text.toString().trim()
         val password = password1.text.toString().trim() + "-" + password2.text.toString().trim() + "-" + password3.text.toString().trim() + "-" + password4.text.toString().trim()
-        if (description == "" || password == "---"){
-            Toast.makeText(this, "Please Enter Proper Value", Toast.LENGTH_LONG).show()
-        } else {
-            val date = dateTime.toString()
+        val dateTime = Calendar.getInstance().time
+        val dateFormatted = DateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.MEDIUM).format(dateTime)
 
-            val data = PasswordCluster(description, password, date)
-            val jsonPassword = Gson().toJson(data)
-
-
-            val sharedPrefsPasswords =
-                getSharedPreferences("passwordAppPasswords", Context.MODE_PRIVATE)
-            val editorPassword = sharedPrefsPasswords.edit()
-
-            editorPassword.putString("passwordObject" + i, jsonPassword)
-
-            editorPassword.apply()
-
-            Toast.makeText(this, "Data Saved", Toast.LENGTH_LONG).show()
-
-            val editorCounter = sharedPrefsCounter.edit()
-
-            editorCounter.putInt("counter", i + 1)
-            editorCounter.apply()
-
-
+        if (TextUtils.isEmpty(description)){
+            descriptionName.error = "Enter description"
+            correct = false
         }
+
+        if (password == "---"){
+            password1.error = "Enter password"
+            password2.error = "Enter password"
+            password3.error = "Enter password"
+            password4.error = "Enter password"
+            correct = false
+        }
+
+
+        var isInserted = myDb.insertData(description, password, dateFormatted)
+
+
+        if (isInserted == true && correct == true){
+            Toast.makeText(this, "Data Saved", Toast.LENGTH_LONG).show()
+            Toast.makeText(this, isInserted.toString(), Toast.LENGTH_LONG).show()
+        } else {
+            Toast.makeText(this, "Data Not Saved", Toast.LENGTH_LONG).show()
+        }
+
+
 
 
     }

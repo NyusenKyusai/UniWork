@@ -8,16 +8,25 @@ import android.view.View
 import android.widget.LinearLayout
 import android.widget.ScrollView
 import android.widget.TextView
+import android.widget.Toast
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.example.mrtayyab.sqlitedbkotlin.DatabaseHelper
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_main.*
 import java.text.DateFormat
 import java.util.*
+import kotlin.collections.ArrayList
 
 class passwords : AppCompatActivity() {
+
+    lateinit var myDb: DatabaseHelper
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_passwords)
+
+
 
         val dateTime = Calendar.getInstance().time
 
@@ -26,32 +35,35 @@ class passwords : AppCompatActivity() {
         val dateTextView : TextView = findViewById(R.id.textDate2) as TextView
         dateTextView.setText(dateFormatted)
 
-        val sharedPrefsCounter = getSharedPreferences("passwordAppCounter", Context.MODE_PRIVATE)
-        val counter = sharedPrefsCounter.getInt("counter", 0)
+        val recyclerView = findViewById(R.id.savedPasswords) as RecyclerView
 
-        
-        val savedPasswords = savedPasswords as LinearLayout
+        recyclerView.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
+
+        val counter = myDb.getTableCount()
+
+        val passwords = ArrayList<PasswordCluster>()
 
         if (counter > 0) {
-
-            val sharedPrefsCounter = getSharedPreferences("passwordAppPasswords", Context.MODE_PRIVATE)
-
             for (i in 1..counter) {
+                var id = i
+                var description = myDb.getData(id.toString(), "COL_2")
+                var password = myDb.getData(id.toString(), "COL_3")
+                var dateTime = myDb.getData(id.toString(), "COL_4")
 
-                val objectString = sharedPrefsCounter.getString("passwordObject$i", "")
-
-                val passwordObject = Gson().fromJson<PasswordCluster>(objectString, PasswordCluster::class.java!!)
-
-                var passwordSection = ScrollView(this)
-                passwordSection = (passwordObject.description + "                     " + passwordObject.dateTime + "\n" + passwordObject.passwordCluster + "\n\n") as ScrollView
-
-                savedPasswords.addView((passwordSection))
-
-
+                passwords.add(PasswordCluster(description.toString(), password.toString(), dateTime.toString()))
             }
         }
 
+/*
+        passwords.add(PasswordCluster("Amazon", "56,78,90,12", "Friday"))
+        passwords.add(PasswordCluster("Amazon", "56,78,90,12", "Friday"))
+        passwords.add(PasswordCluster("Amazon", "56,78,90,12", "Friday"))
+        passwords.add(PasswordCluster("Amazon", "56,78,90,12", "Friday"))
+        passwords.add(PasswordCluster("Amazon", "56,78,90,12", "Friday"))
+*/
+        val adapter = CustomAdapter(passwords)
 
+        recyclerView.adapter = adapter
     }
 
     fun firstActivity(view: View){
