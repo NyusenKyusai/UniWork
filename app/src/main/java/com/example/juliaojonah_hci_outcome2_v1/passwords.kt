@@ -8,6 +8,8 @@ import android.view.View
 import android.widget.LinearLayout
 import android.widget.ScrollView
 import android.widget.TextView
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_main.*
 import java.text.DateFormat
@@ -29,8 +31,14 @@ class passwords : AppCompatActivity() {
         val sharedPrefsCounter = getSharedPreferences("passwordAppCounter", Context.MODE_PRIVATE)
         val counter = sharedPrefsCounter.getInt("counter", 0)
 
-        
-        val savedPasswords = savedPasswords as LinearLayout
+        val recyclerView = findViewById(R.id.savedPasswords) as RecyclerView
+
+        recyclerView.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
+
+        val adapter = CustomAdapter(passwords)
+
+        recyclerView.adapter = adapter
+
 
         if (counter > 0) {
 
@@ -42,10 +50,7 @@ class passwords : AppCompatActivity() {
 
                 val passwordObject = Gson().fromJson<PasswordCluster>(objectString, PasswordCluster::class.java!!)
 
-                var passwordSection = ScrollView(this)
-                passwordSection = (passwordObject.description + "                     " + passwordObject.dateTime + "\n" + passwordObject.passwordCluster + "\n\n") as ScrollView
 
-                savedPasswords.addView((passwordSection))
 
 
             }
