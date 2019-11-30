@@ -2,8 +2,10 @@ package com.example.juliaojonah_hci_outcome2_v1
 
 import android.content.Context
 import android.content.Intent
+import android.database.DatabaseUtils
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.LinearLayout
 import android.widget.ScrollView
@@ -26,7 +28,7 @@ class passwords : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_passwords)
 
-
+        myDb = DatabaseHelper(this)
 
         val dateTime = Calendar.getInstance().time
 
@@ -39,28 +41,14 @@ class passwords : AppCompatActivity() {
 
         recyclerView.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
 
-        val counter = myDb.getTableCount()
+        addSomeDataIfNone()
 
-        val passwords = ArrayList<PasswordCluster>()
+        val passwords = myDb.getListOfAllPasswordClusters()
 
-        if (counter > 0) {
-            for (i in 1..counter) {
-                var id = i
-                var description = myDb.getData(id.toString(), "COL_2")
-                var password = myDb.getData(id.toString(), "COL_3")
-                var dateTime = myDb.getData(id.toString(), "COL_4")
-
-                passwords.add(PasswordCluster(description.toString(), password.toString(), dateTime.toString()))
-            }
+        for (p: PasswordCluster in passwords) {
+            Log.d("PASSWORDCLUSTER","ID=${p.id} Description=${p.description} password=${p.passwordCluster} datetime=${p.dateTime}")
         }
 
-/*
-        passwords.add(PasswordCluster("Amazon", "56,78,90,12", "Friday"))
-        passwords.add(PasswordCluster("Amazon", "56,78,90,12", "Friday"))
-        passwords.add(PasswordCluster("Amazon", "56,78,90,12", "Friday"))
-        passwords.add(PasswordCluster("Amazon", "56,78,90,12", "Friday"))
-        passwords.add(PasswordCluster("Amazon", "56,78,90,12", "Friday"))
-*/
         val adapter = CustomAdapter(passwords)
 
         recyclerView.adapter = adapter
@@ -69,5 +57,12 @@ class passwords : AppCompatActivity() {
     fun firstActivity(view: View){
         val intent = Intent(this, MainActivity::class.java)
         startActivity(intent)
+    }
+
+    fun addSomeDataIfNone() {
+        if (DatabaseUtils.queryNumEntries(myDb.writableDatabase,DatabaseHelper.TABLE_NAME) > 0) return
+        myDb.insertData("Test1","password1","2019-12-01")
+        myDb.insertData("Test2","password2","2019-12-02")
+        myDb.insertData("Test3","password3","2019-12-03")
     }
 }

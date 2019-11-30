@@ -7,8 +7,12 @@ import android.database.Cursor
 import android.database.DatabaseUtils
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
+import com.example.juliaojonah_hci_outcome2_v1.PasswordCluster
 
 class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null, 1) {
+
+
+    //This code is adapted from https://github.com/tayyabmughal676/SQLiteDBKotlin-ParhoLikhoCS
 
 
     companion object {
@@ -24,7 +28,7 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
 
     override fun onCreate(db: SQLiteDatabase) {
 
-        db.execSQL("CREATE TABLE IF NOT EXISTS $TABLE_NAME(ID INTEGER PRIMARY KEY AUTOINCREMENT , DESCRIPTION  TEXT , PASSWORD TEXT , DATE_TIME INTEGER)")
+        db.execSQL("CREATE TABLE IF NOT EXISTS $TABLE_NAME(ID INTEGER PRIMARY KEY , DESCRIPTION  TEXT , PASSWORD TEXT , DATE_TIME INTEGER)")
 
     }
 
@@ -45,17 +49,24 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
         return !res.equals(-1)
     }
 
-    fun getData(id: String, COL_NUM: String): Cursor {
-        val column = arrayOf("$COL_NUM")
-        val columnValue = arrayOf("$id")
+    fun getListOfAllPasswordClusters(): ArrayList<PasswordCluster> {
+        val rv = ArrayList<PasswordCluster>()
         val db = this.writableDatabase
-        return db.query("$TABLE_NAME", column, "$COL_1", columnValue, null, null, null )
-    }
+        val csr = db.query(TABLE_NAME,null /* ALL columns */,null,null,null,null,null)
 
-    fun getTableCount(): Long {
-        val db = this.readableDatabase
-        val count = DatabaseUtils.queryNumEntries(db, TABLE_NAME)
+        while (csr.moveToNext()) {
 
-        return count
+            rv.add(
+                PasswordCluster(
+                    csr.getLong(csr.getColumnIndex(COL_1)),
+                    csr.getString(csr.getColumnIndex(COL_2)),
+                    csr.getString(csr.getColumnIndex(COL_3)),
+                    csr.getString(csr.getColumnIndex(COL_4))
+                )
+            )
+
+        }
+        csr.close()
+        return rv
     }
 }
