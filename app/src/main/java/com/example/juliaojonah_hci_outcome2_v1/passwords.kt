@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.LinearLayout
 import android.widget.ScrollView
@@ -14,6 +15,7 @@ import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_main.*
 import java.text.DateFormat
 import java.util.*
+import kotlin.collections.ArrayList
 
 class passwords : AppCompatActivity() {
 
@@ -35,27 +37,29 @@ class passwords : AppCompatActivity() {
 
         recyclerView.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
 
-        val adapter = CustomAdapter(passwords)
+        var passwords = ArrayList<PasswordCluster>()
 
-        recyclerView.adapter = adapter
+        val passwordsTest = PasswordCluster("Amazon", "55", "Tomorrow")
 
+        val jsonPassword = Gson().toJson(passwordsTest)
 
         if (counter > 0) {
 
-            val sharedPrefsCounter = getSharedPreferences("passwordAppPasswords", Context.MODE_PRIVATE)
+            val sharedPrefsPass = getSharedPreferences("passwordAppPasswords", Context.MODE_PRIVATE)
 
             for (i in 1..counter) {
 
-                val objectString = sharedPrefsCounter.getString("passwordObject$i", "")
+                var objectString = sharedPrefsPass.getString("passwordObject" + i, jsonPassword)
 
-                val passwordObject = Gson().fromJson<PasswordCluster>(objectString, PasswordCluster::class.java!!)
+                var passwordObject = Gson().fromJson<PasswordCluster>(objectString, PasswordCluster::class.java!!)
 
-
-
-
+                passwords.add(PasswordCluster(passwordObject.description, passwordObject.passwordCluster, passwordObject.dateTime))
             }
         }
 
+        val adapter = CustomAdapter(passwords)
+
+        recyclerView.adapter = adapter
 
     }
 
