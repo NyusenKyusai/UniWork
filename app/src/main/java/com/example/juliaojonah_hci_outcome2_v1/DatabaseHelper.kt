@@ -49,6 +49,7 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
         return !res.equals(-1)
     }
 
+    //This function was from someone who helped me on StackOverflow
     fun getListOfAllPasswordClusters(): ArrayList<PasswordCluster> {
         val rv = ArrayList<PasswordCluster>()
         val db = this.writableDatabase

@@ -94,7 +94,6 @@ class MainActivity : AppCompatActivity() {
 
         if (isInserted == true && correct == true){
             Toast.makeText(this, "Data Saved", Toast.LENGTH_LONG).show()
-            Toast.makeText(this, isInserted.toString(), Toast.LENGTH_LONG).show()
         } else {
             Toast.makeText(this, "Data Not Saved", Toast.LENGTH_LONG).show()
         }
