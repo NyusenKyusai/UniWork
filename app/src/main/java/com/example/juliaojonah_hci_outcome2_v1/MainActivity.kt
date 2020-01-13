@@ -43,25 +43,70 @@ class MainActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
-    fun randomise(view: View){
+    fun randomise(view: View) {
 
 
-        val passwordSet1 = Random.nextInt(0,99)
-        val passwordSet2 = Random.nextInt(0,99)
-        val passwordSet3 = Random.nextInt(0,99)
-        val passwordSet4 = Random.nextInt(0,99)
+        var passwordSet1 = Random.nextInt(0, 99)
+        var passwordSet2 = Random.nextInt(0, 99)
+        var passwordSet3 = Random.nextInt(0, 99)
+        var passwordSet4 = Random.nextInt(0, 99)
+
+        var passwordSet1T = ""
+        var passwordSet2T = ""
+        var passwordSet3T = ""
+        var passwordSet4T = ""
+        var password1 = true
+        var password2 = true
+        var password3 = true
+        var password4 = true
+
+        if (passwordSet1 < 10) {
+            passwordSet1T = "0" + passwordSet1
+            password1 = false
+        }
+
+        if (passwordSet2 < 10) {
+            passwordSet2T = "0" + passwordSet2
+            password2 = false
+        }
+
+        if (passwordSet3 < 10) {
+            passwordSet3T = "0" + passwordSet3
+            password3 = false
+        }
+
+        if (passwordSet4 < 10) {
+            passwordSet4T = "0" + passwordSet4
+            password4 = false
+        }
 
         val editText1 = findViewById<EditText>(R.id.password1)
-        editText1.setText(passwordSet1.toString())
+        if (password1 == false) {
+            editText1.setText(passwordSet1T.toString())
+        } else {
+            editText1.setText(passwordSet1.toString())
+        }
 
         val editText2 = findViewById<EditText>(R.id.password2)
-        editText2.setText(passwordSet2.toString())
+        if (password2 == false) {
+            editText2.setText(passwordSet2T.toString())
+        } else {
+            editText2.setText(passwordSet2.toString())
+        }
 
         val editText3 = findViewById<EditText>(R.id.password3)
-        editText3.setText(passwordSet3.toString())
+        if (password3 == false) {
+            editText3.setText(passwordSet3T.toString())
+        } else {
+            editText3.setText(passwordSet3.toString())
+        }
 
         val editText4 = findViewById<EditText>(R.id.password4)
-        editText4.setText(passwordSet4.toString())
+        if (password4 == false) {
+            editText4.setText(passwordSet4T.toString())
+        } else {
+            editText4.setText(passwordSet4.toString())
+        }
 
     }
 

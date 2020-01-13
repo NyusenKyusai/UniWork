@@ -114,7 +114,7 @@
         android:ems="10"
         android:inputType="number"
         android:maxLength="2"
-        android:nextFocusRight="@id/password3"
+        android:nextFocusDown="@id/password3"
         app:layout_constraintStart_toEndOf="@+id/password1"
         app:layout_constraintTop_toBottomOf="@+id/password" />
 
@@ -127,7 +127,7 @@
         android:ems="10"
         android:inputType="number"
         android:maxLength="2"
-        android:nextFocusRight="@id/password4"
+        android:nextFocusDown="@id/password4"
         app:layout_constraintStart_toEndOf="@+id/password2"
         app:layout_constraintTop_toBottomOf="@+id/password" />
 
